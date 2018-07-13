@@ -217,7 +217,7 @@ class Window(window.Window):
         if not decoration:
             flags |= sdl2.SDL_WINDOW_BORDERLESS
 
-        self._native_window = sdl2.SDL_CreateWindow(self._title,
+        self._native_window = sdl2.SDL_CreateWindow(bytes(self._title, "ascii"),
                                                     sdl2.SDL_WINDOWPOS_UNDEFINED,
                                                     sdl2.SDL_WINDOWPOS_UNDEFINED,
                                                     width, height, flags)
