@@ -199,13 +199,12 @@ class Window(window.Window):
                                      config=config,
                                      context=context,
                                      color=color)
-
         # Whether hidpi is active
         self._hidpi = False
 
-        def on_error(error, message):
-            log.warning(message)
-        glfw.glfwSetErrorCallback(on_error)
+        #def on_error(error, message):
+        #    log.warning(message)
+        glfw.glfwSetErrorCallback(self.on_error)
 
         glfw.glfwWindowHint(glfw.GLFW_RESIZABLE, True)
         glfw.glfwWindowHint(glfw.GLFW_DECORATED, True)
@@ -240,87 +239,147 @@ class Window(window.Window):
             self._hidpi = True
 
 
-        def on_framebuffer_resize(win, width, height):
-            self._width, self._height = width, height
-            self.dispatch_event('on_resize', width, height)
-        glfw.glfwSetFramebufferSizeCallback(self._native_window, on_framebuffer_resize)
+        #def on_framebuffer_resize(win, width, height):
+        #    self._width, self._height = width, height
+        #    self.dispatch_event('on_resize', width, height)
+        glfw.glfwSetFramebufferSizeCallback(self._native_window, self.on_framebuffer_resize)
         # def on_resize(win, width, height):
         #     self._width, self._height = width, height
         #     self.dispatch_event('on_resize', width, height)
         # glfw.glfwSetWindowSizeCallback(self._native_window, on_resize)
 
 
-        def on_cursor_enter(win, entered):
-            if entered:
-                self.dispatch_event('on_enter')
-            else:
-                self.dispatch_event('on_leave')
-        glfw.glfwSetCursorEnterCallback(self._native_window, on_cursor_enter)
+        #def on_cursor_enter(win, entered):
+        #    if entered:
+        #        self.dispatch_event('on_enter')
+        #    else:
+        #        self.dispatch_event('on_leave')
+        glfw.glfwSetCursorEnterCallback(self._native_window, self.on_cursor_enter)
 
 
-        def on_window_close(win):
-            self.close()
-        glfw.glfwSetWindowCloseCallback(self._native_window, on_window_close)
+        #def on_window_close(win):
+        #    self.close()
+        glfw.glfwSetWindowCloseCallback(self._native_window, self.on_window_close)
 
 
-        def on_keyboard(win, key, scancode, action, mods):
-            symbol = self._keyboard_translate(key)
-            modifiers = self._modifiers_translate(mods)
-            if action in[glfw.GLFW_PRESS,glfw.GLFW_REPEAT]:
-                self.dispatch_event('on_key_press', symbol, modifiers)
-            else:
-                self.dispatch_event('on_key_release', symbol, modifiers)
-        glfw.glfwSetKeyCallback(self._native_window, on_keyboard)
+        #def on_keyboard(win, key, scancode, action, mods):
+        #    symbol = self._keyboard_translate(key)
+        #    modifiers = self._modifiers_translate(mods)
+        #    if action in[glfw.GLFW_PRESS,glfw.GLFW_REPEAT]:
+        #        self.dispatch_event('on_key_press', symbol, modifiers)
+        #    else:
+        #        self.dispatch_event('on_key_release', symbol, modifiers)
+        glfw.glfwSetKeyCallback(self._native_window, self.on_keyboard)
 
 
-        def on_character(win, character):
-            self.dispatch_event('on_character', u"%c" % character)
-        glfw.glfwSetCharCallback(self._native_window, on_character)
+        #def on_character(win, character):
+        #    self.dispatch_event('on_character', u"%c" % character)
+        glfw.glfwSetCharCallback(self._native_window, self.on_keyboard_char)
 
 
-        def on_mouse_button(win, button, action, mods):
-            x,y = glfw.glfwGetCursorPos(win)
-            if self._hidpi:
-                x, y = 2*x, 2*y
-
-            button = __mouse_map__.get(button, window.mouse.UNKNOWN)
-            if action == glfw.GLFW_RELEASE:
-                self._button = window.mouse.NONE
-                self._mouse_x = x
-                self._mouse_y = y
-                self.dispatch_event('on_mouse_release', x, y, button)
-            elif action == glfw.GLFW_PRESS:
-                self._button = button
-                self._mouse_x = x
-                self._mouse_y = y
-                self.dispatch_event('on_mouse_press', x, y, button)
-        glfw.glfwSetMouseButtonCallback(self._native_window, on_mouse_button)
-
-
-        def on_mouse_motion(win, x, y):
-            if self._hidpi:
-                x, y = 2*x, 2*y
-            dx = x - self._mouse_x
-            dy = y - self._mouse_y
-            self._mouse_x = x
-            self._mouse_y = y
-            if self._button != window.mouse.NONE:
-                self.dispatch_event('on_mouse_drag', x, y, dx, dy, self._button)
-            else:
-                self.dispatch_event('on_mouse_motion', x, y, dx, dy)
-        glfw.glfwSetCursorPosCallback(self._native_window, on_mouse_motion)
+        #def on_mouse_button(win, button, action, mods):
+        #    x,y = glfw.glfwGetCursorPos(win)
+        #    if self._hidpi:
+        #        x, y = 2*x, 2*y
+        #    button = __mouse_map__.get(button, window.mouse.UNKNOWN)
+        #    if action == glfw.GLFW_RELEASE:
+        #        self._button = window.mouse.NONE
+        #        self._mouse_x = x
+        #        self._mouse_y = y
+        #        self.dispatch_event('on_mouse_release', x, y, button)
+        #    elif action == glfw.GLFW_PRESS:
+        #        self._button = button
+        #        self._mouse_x = x
+        #        self._mouse_y = y
+        #        self.dispatch_event('on_mouse_press', x, y, button)
+        glfw.glfwSetMouseButtonCallback(self._native_window, self.on_mouse_button)
 
 
-        def on_scroll(win, xoffset, yoffset):
-            x,y = glfw.glfwGetCursorPos(win)
-            if self._hidpi:
-                x, y = 2*x, 2*y
-            self.dispatch_event('on_mouse_scroll', x, y, xoffset, yoffset)
-        glfw.glfwSetScrollCallback( self._native_window, on_scroll )
+        #def on_mouse_motion(win, x, y):
+        #    if self._hidpi:
+        #        x, y = 2*x, 2*y
+        #    dx = x - self._mouse_x
+        #    dy = y - self._mouse_y
+        #    self._mouse_x = x
+        #    self._mouse_y = y
+        #    if self._button != window.mouse.NONE:
+        #        self.dispatch_event('on_mouse_drag', x, y, dx, dy, self._button)
+        #    else:
+        #        self.dispatch_event('on_mouse_motion', x, y, dx, dy)
+        glfw.glfwSetCursorPosCallback(self._native_window, self.on_mouse_motion)
+
+
+        #def on_scroll(win, xoffset, yoffset):
+        #    x,y = glfw.glfwGetCursorPos(win)
+        #    if self._hidpi:
+        #        x, y = 2*x, 2*y
+        #    self.dispatch_event('on_mouse_scroll', x, y, xoffset, yoffset)
+        glfw.glfwSetScrollCallback( self._native_window, self.on_scroll )
 
         self._width, self._height = self.get_size()
         __windows__.append(self)
 
+    def on_error(self, error, message):
+        log.warning(message)
+
+    def on_framebuffer_resize(self, win, width, height):
+        self._width, self._height = width, height
+        self.dispatch_event('on_resize', width, height)
+
+    def on_cursor_enter(self, win, entered):
+        if entered:
+            self.dispatch_event('on_enter')
+        else:
+            self.dispatch_event('on_leave')
+
+    def on_window_close(self, win):
+        self.close()
+
+    def on_keyboard(self, win, key, scancode, action, mods):
+        symbol = self._keyboard_translate(key)
+        modifiers = self._modifiers_translate(mods)
+        if action in[glfw.GLFW_PRESS,glfw.GLFW_REPEAT]:
+            self.dispatch_event('on_key_press', symbol, modifiers)
+        else:
+            self.dispatch_event('on_key_release', symbol, modifiers)
+
+    def on_keyboard_char(self, win, character):
+        self.dispatch_event('on_character', u"%c" % character)
+
+    def on_mouse_button(self, win, button, action, mods):
+        x,y = glfw.glfwGetCursorPos(win)
+        if self._hidpi:
+            x, y = 2*x, 2*y
+
+        button = __mouse_map__.get(button, window.mouse.UNKNOWN)
+        if action == glfw.GLFW_RELEASE:
+            self._button = window.mouse.NONE
+            self._mouse_x = x
+            self._mouse_y = y
+            self.dispatch_event('on_mouse_release', x, y, button)
+        elif action == glfw.GLFW_PRESS:
+            self._button = button
+            self._mouse_x = x
+            self._mouse_y = y
+            self.dispatch_event('on_mouse_press', x, y, button)
+
+    def on_mouse_motion(self, win, x, y):
+        if self._hidpi:
+            x, y = 2*x, 2*y
+        dx = x - self._mouse_x
+        dy = y - self._mouse_y
+        self._mouse_x = x
+        self._mouse_y = y
+        if self._button != window.mouse.NONE:
+            self.dispatch_event('on_mouse_drag', x, y, dx, dy, self._button)
+        else:
+            self.dispatch_event('on_mouse_motion', x, y, dx, dy)
+
+    def on_scroll(self, win, xoffset, yoffset):
+        x,y = glfw.glfwGetCursorPos(win)
+        if self._hidpi:
+            x, y = 2*x, 2*y
+        self.dispatch_event('on_mouse_scroll', x, y, xoffset, yoffset)
 
     def _modifiers_translate( self, modifiers ):
         _modifiers = 0
