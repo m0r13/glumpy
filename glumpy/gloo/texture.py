@@ -149,7 +149,7 @@ class Texture(GPUData,GLObject):
         """ Texture wrapping mode """
 
         self._wrapping = value
-        self._need_setup = True
+        self._set_wrapping()
 
     @property
     def interpolation(self):
@@ -165,10 +165,14 @@ class Texture(GPUData,GLObject):
             self._interpolation = value
         else:
             self._interpolation = value,value
-        self._need_setup = True
+        self._set_wrapping()
 
 
     def _setup(self):
+        self._set_wrapping()
+        self._need_setup = False
+
+    def _set_wrapping(self):
         """ Setup texture on GPU """
 
         min_filter, mag_filter = self._interpolation
@@ -179,7 +183,6 @@ class Texture(GPUData,GLObject):
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_S, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_T, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_R, gl.GL_CLAMP_TO_EDGE)
-        self._need_setup = False
 
 
     def _activate(self):
