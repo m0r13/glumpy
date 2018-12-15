@@ -178,11 +178,13 @@ class Texture(GPUData,GLObject):
         min_filter, mag_filter = self._interpolation
         wrapping = self._wrapping
 
+        self._activate()
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_MIN_FILTER, min_filter)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_MAG_FILTER, mag_filter)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_S, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_T, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_R, gl.GL_CLAMP_TO_EDGE)
+        self._deactivate()
 
 
     def _activate(self):
