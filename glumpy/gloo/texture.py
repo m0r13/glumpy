@@ -178,14 +178,16 @@ class Texture(GPUData,GLObject):
         min_filter, mag_filter = self._interpolation
         wrapping = self._wrapping
 
-        self._activate()
+        # not optimal solution perhaps
+        # texture might be not set up yet
+        # but calling _activate() would set wrapping again and so this would lead to recursion
+        gl.glBindTexture(self.target, self._handle)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_MIN_FILTER, min_filter)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_MAG_FILTER, mag_filter)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_S, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_T, wrapping)
         gl.glTexParameterf(self.target, gl.GL_TEXTURE_WRAP_R, gl.GL_CLAMP_TO_EDGE)
-        self._deactivate()
-
+        gl.glBindTexture(self.target, 0)
 
     def _activate(self):
         """ Activate texture on GPU """
