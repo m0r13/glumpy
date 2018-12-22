@@ -223,9 +223,9 @@ class Window(event.EventDispatcher):
 
     def on_key_press(self, k, modifiers):
         """" Default key handler that close window on escape """
-        if k == key.ESCAPE:
-            self.close()
-            return True
+        #if k == key.ESCAPE:
+        #    self.close()
+        #    return True
         elif k == key.F10:
             import os, sys
             import numpy as np
