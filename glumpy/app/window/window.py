@@ -226,7 +226,7 @@ class Window(event.EventDispatcher):
         #if k == key.ESCAPE:
         #    self.close()
         #    return True
-        elif k == key.F10:
+        if k == key.F10:
             import os, sys
             import numpy as np
             from glumpy.ext import png
