@@ -220,8 +220,9 @@ class Window(window.Window):
         if config is None:
             config = configuration.Configuration()
         set_configuration(config)
+        other_context = context._native_window if context is not None else None
         self._native_window = glfw.glfwCreateWindow( self._width, self._height,
-                                                     self._title, None, None)
+                                                     self._title, None, other_context)
 
         if not self._native_window:
             log.critical("Window creation failed")
@@ -309,7 +310,7 @@ class Window(window.Window):
         #        self.dispatch_event('on_mouse_drag', x, y, dx, dy, self._button)
         #    else:
         #        self.dispatch_event('on_mouse_motion', x, y, dx, dy)
-        glfw.glfwSetCursorPosCallback(self._native_window, self.on_mouse_motion)
+        glfw.glfwSetCursorPosCallback(self._native_window, self._on_mouse_motion)
 
 
         #def on_scroll(win, xoffset, yoffset):
@@ -366,7 +367,7 @@ class Window(window.Window):
             self._mouse_y = y
             self.dispatch_event('on_mouse_press', x, y, button)
 
-    def on_mouse_motion(self, win, x, y):
+    def _on_mouse_motion(self, win, x, y):
         if self._hidpi:
             x, y = 2*x, 2*y
         dx = x - self._mouse_x
@@ -410,6 +411,9 @@ class Window(window.Window):
     def hide(self):
         glfw.glfwHideWindow( self._native_window )
         self.dispatch_event('on_hide')
+
+    def focus(self):
+        glfw.glfwFocusWindow(self._native_window)
 
     def close(self):
         glfw.glfwSetWindowShouldClose(self._native_window, True)

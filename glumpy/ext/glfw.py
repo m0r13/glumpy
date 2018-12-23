@@ -541,6 +541,7 @@ glfwIconifyWindow              = _glfw.glfwIconifyWindow
 glfwRestoreWindow              = _glfw.glfwRestoreWindow
 glfwShowWindow                 = _glfw.glfwShowWindow
 glfwHideWindow                 = _glfw.glfwHideWindow
+glfwFocusWindow                = _glfw.glfwFocusWindow
 glfwGetWindowMonitor           = _glfw.glfwGetWindowMonitor
 glfwGetWindowAttrib            = _glfw.glfwGetWindowAttrib
 glfwSetWindowUserPointer       = _glfw.glfwSetWindowUserPointer

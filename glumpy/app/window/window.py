@@ -84,7 +84,7 @@ class Window(event.EventDispatcher):
           'A mouse button was released.'
           pass
 
-      def on_mouse_motion(x, y, dx, dy):
+      def on_mouse_motion(self, x, y, dx, dy):
           'The mouse was moved with no buttons held down.'
           pass
 
