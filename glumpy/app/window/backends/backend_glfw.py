@@ -412,6 +412,10 @@ class Window(window.Window):
         glfw.glfwHideWindow( self._native_window )
         self.dispatch_event('on_hide')
 
+    def set_cursor_visible(self, visible):
+        cursor = glfw.GLFW_CURSOR_NORMAL if visible else glfw.GLFW_CURSOR_HIDDEN
+        glfw.glfwSetInputMode(self._native_window, glfw.GLFW_CURSOR, cursor)
+
     def focus(self):
         glfw.glfwFocusWindow(self._native_window)
 
