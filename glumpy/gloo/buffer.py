@@ -106,3 +106,9 @@ class IndexBuffer(Buffer):
 
     def __init__(self, usage=gl.GL_DYNAMIC_DRAW):
         Buffer.__init__(self, gl.GL_ELEMENT_ARRAY_BUFFER, usage)
+
+class ShaderStorageBuffer(Buffer):
+
+    def __init__(self, usage=gl.GL_DYNAMIC_DRAW):
+        Buffer.__init__(self, gl.GL_SHADER_STORAGE_BUFFER, usage)
+

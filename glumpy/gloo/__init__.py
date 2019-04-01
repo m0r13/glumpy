@@ -16,7 +16,7 @@ from . texture import TextureFloat1D, TextureFloat2D
 from . texture import DepthTexture
 from . array import VertexArray
 from . buffer import Buffer
-from . buffer import VertexBuffer, IndexBuffer
+from . buffer import VertexBuffer, IndexBuffer, ShaderStorageBuffer
 from . shader import Shader
 from . shader import VertexShader, FragmentShader, GeometryShader
 from . framebuffer import FrameBuffer
