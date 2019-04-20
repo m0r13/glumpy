@@ -70,6 +70,7 @@ from glumpy.gloo.texture import TextureFloat1D, TextureFloat2D
 
 
 # ------------------------------------------------------------- gl_typeinfo ---
+# CHANGE BY ME (m0r13): OpenGL seems to expect int's for bool uniforms
 gl_typeinfo = {
     gl.GL_FLOAT        : ( 1, gl.GL_FLOAT,        np.float32),
     gl.GL_FLOAT_VEC2   : ( 2, gl.GL_FLOAT,        np.float32),
@@ -79,10 +80,10 @@ gl_typeinfo = {
     gl.GL_INT_VEC2     : ( 2, gl.GL_INT,          np.int32),
     gl.GL_INT_VEC3     : ( 3, gl.GL_INT,          np.int32),
     gl.GL_INT_VEC4     : ( 4, gl.GL_INT,          np.int32),
-    gl.GL_BOOL         : ( 1, gl.GL_BOOL,         np.bool),
-    gl.GL_BOOL_VEC2    : ( 2, gl.GL_BOOL,         np.bool),
-    gl.GL_BOOL_VEC3    : ( 3, gl.GL_BOOL,         np.bool),
-    gl.GL_BOOL_VEC4    : ( 4, gl.GL_BOOL,         np.bool),
+    gl.GL_BOOL         : ( 1, gl.GL_BOOL,         np.int32),
+    gl.GL_BOOL_VEC2    : ( 2, gl.GL_BOOL,         np.int32),
+    gl.GL_BOOL_VEC3    : ( 3, gl.GL_BOOL,         np.int32),
+    gl.GL_BOOL_VEC4    : ( 4, gl.GL_BOOL,         np.int32),
     gl.GL_FLOAT_MAT2   : ( 4, gl.GL_FLOAT,        np.float32),
     gl.GL_FLOAT_MAT3   : ( 9, gl.GL_FLOAT,        np.float32),
     gl.GL_FLOAT_MAT4   : (16, gl.GL_FLOAT,        np.float32),
