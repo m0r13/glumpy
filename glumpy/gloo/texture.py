@@ -148,8 +148,9 @@ class Texture(GPUData,GLObject):
     def wrapping(self, value):
         """ Texture wrapping mode """
 
-        self._wrapping = value
-        self._set_wrapping()
+        if self._wrapping != value:
+            self._wrapping = value
+            self._set_wrapping()
 
     @property
     def interpolation(self):
@@ -161,11 +162,13 @@ class Texture(GPUData,GLObject):
     def interpolation(self, value):
         """ Texture interpolation for minication and magnification. """
 
+        old_interpolation = self._interpolation
         if isinstance(value, (list,tuple)):
             self._interpolation = value
         else:
             self._interpolation = value,value
-        self._set_wrapping()
+        if old_interpolation != self._interpolation:
+            self._set_wrapping()
 
 
     def _setup(self):
